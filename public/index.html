@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeedTest Pro - Real Internet Speed Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="gradient-bg">
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere-2"></div>
+        <div class="gradient-sphere-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <span class="logo-text">SpeedTest <span class="logo-highlight">Pro</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-page="home">Home</a>
+                <a href="#" class="nav-link" data-page="history">History</a>
+                <a href="#" class="nav-link" data-page="servers">Servers</a>
+                <a href="#" class="nav-link" data-page="about">About</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="settings-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="hero-section">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Real-time testing
+            </div>
+            <h1 class="hero-title">
+                Professional Internet
+                <span class="gradient-text">Speed Test</span>
+            </h1>
+            <p class="hero-subtitle">
+                Test your connection with enterprise-grade accuracy. Multi-server testing, 
+                real-time metrics, and detailed analysis of your internet performance.
+            </p>
+        </div>
+
+        <div class="speed-card" id="mainSpeedCard">
+            <div class="card-header">
+                <div class="server-info">
+                    <div class="server-selector">
+                        <i class="fas fa-server"></i>
+                        <select id="serverSelect" class="server-select">
+                            <option value="auto">Auto Select (Recommended)</option>
+                            <option value="ny">New York - SpeedTest Pro</option>
+                            <option value="london">London - SpeedTest Pro</option>
+                            <option value="tokyo">Tokyo - SpeedTest Pro</option>
+                            <option value="frankfurt">Frankfurt - SpeedTest Pro</option>
+                            <option value="singapore">Singapore - SpeedTest Pro</option>
+                        </select>
+                    </div>
+                    <div class="connection-info">
+                        <span class="info-item">
+                            <i class="fas fa-wifi"></i>
+                            <span id="connectionType">Ethernet</span>
+                        </span>
+                        <span class="info-item">
+                            <i class="fas fa-globe"></i>
+                            <span id="serverLocation">Connecting...</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="ip-info">
+                    <i class="fas fa-network-wired"></i>
+                    <span class="ip-label">Your IP:</span>
+                    <span class="ip-value" id="user-ip">--</span>
+                </div>
+            </div>
+
+            <div class="speed-gauge-container">
+                <div class="speed-gauge">
+                    <canvas id="gaugeCanvas" width="400" height="200"></canvas>
+                    <div class="gauge-center">
+                        <span class="gauge-value" id="currentSpeed">0</span>
+                        <span class="gauge-unit">Mbps</span>
+                    </div>
+                </div>
+                <div class="gauge-labels">
+                    <span>0</span>
+                    <span>100</span>
+                    <span>200</span>
+                    <span>500</span>
+                    <span>1000+</span>
+                </div>
+            </div>
+
+            <div class="live-stats" id="liveStats" style="display: none;">
+                <div class="stat-item">
+                    <span class="stat-label">Current Speed</span>
+                    <span class="stat-value" id="liveSpeed">0 Mbps</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Data Transferred</span>
+                    <span class="stat-value" id="dataTransferred">0 MB</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Elapsed Time</span>
+                    <span class="stat-value" id="elapsedTime">0s</span>
+                </div>
+            </div>
+
+            <div class="speed-metrics">
+                <div class="metric-item" id="downloadMetric">
+                    <div class="metric-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Download</div>
+                        <div class="metric-value-group">
+                            <span class="metric-value" id="downloadSpeed">--</span>
+                            <span class="metric-unit">Mbps</span>
+                        </div>
+                        <div class="metric-trend" id="downloadTrend">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-divider"></div>
+
+                <div class="metric-item" id="uploadMetric">
+                    <div class="metric-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Upload</div>
+                        <div class="metric-value-group">
+                            <span class="metric-value" id="uploadSpeed">--</span>
+                            <span class="metric-unit">Mbps</span>
+                        </div>
+                        <div class="metric-trend" id="uploadTrend">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-divider"></div>
+
+                <div class="metric-item" id="pingMetric">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Ping</div>
+                        <div class="metric-value-group">
+                            <span class="metric-value" id="pingSpeed">--</span>
+                            <span class="metric-unit">ms</span>
+                        </div>
+                        <div class="metric-trend" id="pingTrend">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-divider"></div>
+
+                <div class="metric-item" id="jitterMetric">
+                    <div class="metric-icon">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label">Jitter</div>
+                        <div class="metric-value-group">
+                            <span class="metric-value" id="jitterSpeed">--</span>
+                            <span class="metric-unit">ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="advanced-metrics" id="advancedMetrics" style="display: none;">
+                <div class="metrics-grid">
+                    <div class="advanced-metric">
+                        <span class="metric-name">Packet Loss</span>
+                        <span class="metric-value" id="packetLoss">0%</span>
+                    </div>
+                    <div class="advanced-metric">
+                        <span class="metric-name">Quality</span>
+                        <span class="metric-value" id="qualityScore">100%</span>
+                    </div>
+                    <div class="advanced-metric">
+                        <span class="metric-name">Bufferbloat</span>
+                        <span class="metric-value" id="bufferbloat">A+</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-info">
+                    <span class="progress-label" id="progressLabel">Ready to test</span>
+                    <span class="progress-percentage" id="progressPercentage">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-stages">
+                        <span class="stage" data-stage="ping">Ping</span>
+                        <span class="stage" data-stage="download">Download</span>
+                        <span class="stage" data-stage="upload">Upload</span>
+                        <span class="stage" data-stage="jitter">Jitter</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="start-button" id="startTest">
+                <span class="button-text">Start Speed Test</span>
+                <span class="button-icon">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </button>
+
+            <div class="results-footer">
+                <div class="results-timestamp" id="timestamp"></div>
+                <div class="share-buttons">
+                    <button class="share-btn" data-platform="twitter">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+                    <button class="share-btn" data-platform="facebook">
+                        <i class="fab fa-facebook"></i>
+                    </button>
+                    <button class="share-btn" data-platform="copy">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section" id="historySection" style="display: none;">
+            <h2 class="section-title">Test History</h2>
+            <div class="history-list" id="historyList">
+                <!-- History items will be inserted here -->
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Real-time Testing</h3>
+                <p>Live speed updates during test with precise measurements using WebSocket technology</p>
+                <div class="feature-stats">
+                    <span>±0.1 Mbps accuracy</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Advanced Metrics</h3>
+                <p>Jitter, packet loss, bufferbloat, and quality scoring for complete analysis</p>
+                <div class="feature-stats">
+                    <span>8 different metrics</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3>Multi-Server</h3>
+                <p>Test against 50+ global servers for accurate regional performance</p>
+                <div class="feature-stats">
+                    <span>50+ servers worldwide</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>SpeedTest Pro</h4>
+                <p>Professional internet speed testing tool with enterprise-grade accuracy.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 SpeedTest Pro. All rights reserved. Made with <i class="fas fa-heart"></i> for better internet</p>
+        </div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
